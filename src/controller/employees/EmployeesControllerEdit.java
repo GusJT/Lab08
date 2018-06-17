@@ -19,6 +19,7 @@ public class EmployeesControllerEdit extends HttpServlet {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try{
 			System.out.print(request.getParameter("info"));
+			
 			Key k = KeyFactory.createKey(Employee.class.getSimpleName(), new Long(request.getParameter("id")).longValue());
 			Employee e = pm.getObjectById(Employee.class, k);
 			request.setAttribute("employee", e);
