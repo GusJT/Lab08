@@ -1,30 +1,99 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<!-- The HTML 4.01 Transitional DOCTYPE declaration-->
-<!-- above set at the top of the file will set     -->
-<!-- the browser's rendering engine into           -->
-<!-- "Quirks Mode". Replacing this declaration     -->
-<!-- with a "Standards Mode" doctype is supported, -->
-<!-- but may lead to some differences in layout.   -->
-
-<html>
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>Hello App Engine</title>
-  </head>
-
-  <body>
-    <h1>Access</h1>
-	
-    <table>
-      <tr>
-        <td colspan="2" style="font-weight:bold;">Available Servlets:</td>        
-      </tr>
-      <tr>
-        <td><a href="/access">ver access</a></td>
-      </tr>
-      <tr>
-        <td><a href="/access/add">agregar empleado</a></td>
-      </tr>
-    </table>
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home - Hotel Service</title>
+    <link type="text/css" rel="stylesheet" href="./css/Diseno.css">
+    <link type="text/css" rel="stylesheet" href="./css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="google-signin-client_id" content="746890482047-c734fgap3p3vb6bdoquufn60bsh2p8l9.apps.googleusercontent.com">
+    <style>
+        #mainHeader{
+            background: url('http://www.hotelimperialeroma.it/data/mobile/hotel-imperiale-roma-camere-01-2.jpg') no-repeat local center;
+            height: 40%;
+            text-align: center;
+            padding: 100px;
+            background-size: 100%;
+            overflow: hidden;
+            transition: opacity 500ms, max-height 250ms,padding 500ms;
+        }
+        body{
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            font-family: Roboto, serif;
+        }
+    </style>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+</head>
+<body>
+<div id="mainHeader">
+    <h1 style="font-size: 50px; color: white; display: inline; font-weight: bold; font-family: 'Product Sans',serif">Hotel Services</h1>
+</div>
+<nav style="background-color: #67c9b3">
+    <div class="nav-wrapper">
+        <a href="./" class="brand-logo" style="padding: 0 0 0 20px; font-family: 'Product Sans', Roboto, serif">Hotel Services</a>
+    </div>
+</nav>
+<br />
+<div class="container">
+    <div style="font-size: x-large">
+        <span id="mainText">Welcome! Log In to Start:</span>
+        <br />
+        <br />
+        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+    </div>
+    <br />
+    <hr />
+    Developed by:<br />
+    Fernando Araoz, 20173373<br />
+    Jose Rodriguez, 20101650<br />
+    Gustavo Turpo, 20173374<br />
+</div>
+<script>
+    "use strict";
+    function onSignIn(googleUser) {
+        var profile = googleUser.getBasicProfile();
+        document.getElementById("mainText").innerText = "Logged In. Redirecting...";
+        document.getElementById("mainHeader").style.maxHeight = "0";
+        document.getElementById("mainHeader").style.padding = "0";
+        setTimeout(function () {
+            postRedirect("/users/add",{
+                userEmail : profile.getEmail(),
+                userName : profile.getName(),
+                userImg : profile.getImageUrl(),
+                userRole : "admin",
+                action : "logIn"
+            });
+        },500);
+    }
+    function postRedirect(url, postData){
+        var postForm = document.createElement("form");
+        postForm.action = url;
+        postForm.method = "POST";
+        postForm.style.display = "none";
+        for (var key in postData){
+            if (postData.hasOwnProperty(key)){
+                var input = document.createElement("input");
+                input.type = "hidden";
+                input.name = key;
+                input.value = postData[key];
+                postForm.appendChild(input);
+            }
+        }
+        document.body.appendChild(postForm);
+        postForm.submit();
+    }
+</script>
+<script>
+    function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+            console.log('User signed out.');
+        });
+    }
+</script>
+</body>
 </html>
